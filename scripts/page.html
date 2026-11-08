@@ -1,0 +1,135 @@
+<title>記念日</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+/* 配置: 調子ごとに額を分けて上下に並べる(祝う→ふつう→静か)。祝う日は紅と金の水引の額、静かな日は黒枠。額の中は左に日数と名前、右にひとこと */
+:root {
+  --ground: #F4ECEC;   /* 淡い紅梅の白。額の外 */
+  --paper: #FFFFFF;
+  --ink: #1E1A1B;     /* 少し温かい墨 */
+  --muted: #6A5E60;
+  --beni: #B5222C;     /* 紅。祝う日の数字と枠 */
+  --gold: #B08D3C;     /* 金。祝う日の細い線 */
+  --seal: var(--beni);
+  --mincho: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+  --gothic: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #151012; --paper: #1F1719; --ink: #F1E9EA; --muted: #B3A5A8; --beni: #E0626B; --gold: #D2AE5A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #151012; --paper: #1F1719; --ink: #F1E9EA; --muted: #B3A5A8; --beni: #E0626B; --gold: #D2AE5A;
+  color-scheme: dark;
+}
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--gothic);
+  padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 40px;
+}
+.stack { max-width: 640px; margin: 0 auto; display: grid; gap: 28px; }
+.frame {
+  background: var(--paper);
+  box-sizing: border-box;
+  padding: 22px clamp(18px, 5vw, 40px) 28px;
+}
+.solo .frame { min-height: calc(100svh - 68px); display: flex; flex-direction: column; justify-content: center; }
+.tone-祝う { border: 3px solid var(--beni); border-radius: 5px; box-shadow: 0 0 0 5px var(--paper), 0 0 0 6px var(--gold); margin: 7px; }
+.tone-祝う .head { border-bottom-color: var(--gold); }
+.tone-祝う .rows { border-color: var(--gold); }
+.tone-祝う .row .lead { border-color: var(--gold); }
+.tone-祝う .head h1 { color: var(--beni); }
+.tone-ふつう { border: 1px solid var(--ink); }
+.tone-静か { border: 15px solid var(--ink); }   /* 黒枠 */
+
+.head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--ink); padding-bottom: 12px; }
+.head h1 { font: 600 15px/1.4 var(--mincho); letter-spacing: .3em; margin: 0; }
+.head .date { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.mood { margin: 14px 0 0; font: 600 19px/1.5 var(--mincho); letter-spacing: .12em; }
+
+.items { list-style: none; margin: 24px 0 28px; padding: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 24px; row-gap: 26px; }
+.item { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; align-items: baseline; }
+.when { font: 600 15px/1 var(--mincho); letter-spacing: .08em; white-space: nowrap; }
+.when b { font: 600 clamp(40px, 11vw, 60px)/1 var(--mincho); font-variant-numeric: tabular-nums; margin: 0 .06em; }
+.tone-祝う .when b { color: var(--beni); }
+.name { font: 600 clamp(17px, 4.6vw, 21px)/1.5 var(--mincho); letter-spacing: .1em; }
+.what { display: block; margin-top: 2px; font-size: 14.5px; line-height: 1.7; color: var(--muted); }
+.cal { display: block; font-size: 13px; line-height: 1.7; color: var(--muted); }
+
+.rows { margin: 0; border-top: 1px solid var(--ink); padding-top: 20px; display: grid; gap: 16px; }
+.row { display: grid; grid-template-columns: 4.6em 2.2em minmax(0, 1fr); align-items: baseline; font-size: 15px; line-height: 1.85; }
+.row dt { font-weight: 500; letter-spacing: .12em; }
+.row .lead { align-self: start; margin-top: .95em; height: 0; border-top: 1px solid var(--ink); }
+.row dd { margin: 0; }
+.foot { max-width: 640px; margin: 6px auto 0; font-size: 12.5px; line-height: 1.7; color: var(--muted); }
+
+/* 横長の画面: 左に日数と名前、右にひとこと */
+@media (min-width: 860px) {
+  .stack { max-width: 1020px; }
+  .frame { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 48px; padding-inline: 48px; align-content: center; }
+  .solo .frame { display: grid; }
+  .head, .mood { grid-column: 1 / -1; }
+  .items { margin: 28px 0; align-self: center; }
+  .rows { align-self: center; border-top: 0; border-left: 1px solid var(--ink); padding: 8px 0 8px 40px; }
+  .foot { max-width: 1020px; }
+}
+
+/* ===== 1種類だけの日の専用デザイン(混在の日は上のデザイン) ===== */
+/* 記念日だけ: 深い紅の地に七宝の模様、白い額に金の二重線。数字を大きく */
+body:has(.mode-祝う) {
+  background-color: #8E1B26;
+  background-image:
+    radial-gradient(circle at 0 0, transparent 21px, rgba(255,255,255,.11) 21px 22px, transparent 22px),
+    radial-gradient(circle at 100% 0, transparent 21px, rgba(255,255,255,.11) 21px 22px, transparent 22px),
+    radial-gradient(circle at 0 100%, transparent 21px, rgba(255,255,255,.11) 21px 22px, transparent 22px),
+    radial-gradient(circle at 100% 100%, transparent 21px, rgba(255,255,255,.11) 21px 22px, transparent 22px),
+    radial-gradient(circle at 50% 50%, transparent 21px, rgba(255,255,255,.11) 21px 22px, transparent 22px);
+  background-size: 46px 46px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body:has(.mode-祝う) { background-color: #2A0D11; } }
+:root[data-theme="dark"] body:has(.mode-祝う) { background-color: #2A0D11; }
+.mode-祝う .frame { border: 1px solid var(--gold); border-radius: 2px; margin: 10px; padding-block: 30px 36px;
+  box-shadow: 0 0 0 7px var(--paper), 0 0 0 8px var(--gold), 0 14px 44px rgba(0,0,0,.35); }
+.mode-祝う .when b { font-size: clamp(44px, min(16vw, calc((100svh - 560px - var(--k) * 96px) / var(--k))), 92px); }
+.mode-祝う .mood { color: var(--beni); }
+.mode-祝う .foot { color: #FBEAEA; }
+
+/* お悔やみだけ: 冷たい灰色の地に太い黒枠と内側の細い線。名前・日数は縦書きで、色は使わない */
+body:has(.mode-静か) { background: #DFE0E3; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body:has(.mode-静か) { background: #0A0B0D; } }
+:root[data-theme="dark"] body:has(.mode-静か) { background: #0A0B0D; }
+.mode-静か .frame { border-width: 18px; outline: 1px solid var(--ink); outline-offset: -27px; padding-block: 44px 48px; text-align: center; }
+.mode-静か .head { justify-content: center; border-bottom: 0; flex-direction: column; align-items: center; gap: 6px; }
+.mode-静か .head h1 { letter-spacing: .5em; margin-right: -.5em; }
+.mode-静か .mood { color: var(--muted); font-size: 15px; letter-spacing: .3em; margin-top: 18px; }
+.mode-静か .items { display: flex; flex-direction: row-reverse; justify-content: center; align-items: flex-start; gap: 48px; margin: 38px 0 40px; }
+/* 縦書きの中では、flexの「column」が右から左への並びになる。右から 名前 → 内容 → 日数 */
+.mode-静か .item { display: flex; flex-direction: column; gap: 16px; writing-mode: vertical-rl; align-items: flex-start; }
+.mode-静か .item > span:last-child { display: contents; }
+.mode-静か .name { order: 1; }
+.mode-静か .what { order: 2; }
+.mode-静か .when { order: 3; }
+.mode-静か { --u: clamp(26px, min(8vw, calc((100svh - 520px) / (var(--n) * 1.3))), 48px); }
+.mode-静か .name { font-size: var(--u); letter-spacing: .2em; }
+.mode-静か .what { margin: 0; font-size: max(16px, calc(var(--u) * .46)); line-height: 2; letter-spacing: .15em; }
+.mode-静か .when { font-size: max(16px, calc(var(--u) * .46)); letter-spacing: .15em; line-height: 2; }
+.mode-静か .when b { font-size: calc(var(--u) * .72); line-height: 1; text-combine-upright: all; margin: .1em 0; }
+.mode-静か .tcy { text-combine-upright: all; }   /* 1〜2桁の数字は縦書きの中で横向きに組む */
+.mode-静か .up { text-orientation: upright; }         /* 3桁以上は1字ずつ正立させる */
+.mode-静か .rows { margin-inline: auto; max-width: 30em; text-align: left; border-top: 1px solid var(--ink); }
+@media (min-width: 860px) {
+  .mode-祝う .when b { font-size: clamp(48px, calc((100svh - 340px - var(--k) * 96px) / var(--k)), 96px); }
+  .mode-静か { --u: clamp(30px, calc((100svh - 420px) / (var(--n) * 1.3)), 84px); }
+  .mode-静か.stack { max-width: 760px; }
+  .mode-静か .frame { display: flex; flex-direction: column; justify-content: center; }
+  .mode-静か .rows { border-left: 0; padding: 22px 0 0; }
+}
+</style>
+<main class="stack{{SOLO}}{{MODE}}" style="--k: {{K}}; --n: {{N}}">
+{{FRAMES}}
+  <p class="foot">暦の吉凶は参考情報で、当たるとは限りません。日数と周年は、登録した日付をもとに数えています。</p>
+</main>
